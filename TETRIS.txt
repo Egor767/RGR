@@ -1,0 +1,355 @@
+
+using System;
+using System.Threading;
+class HelloWorld
+{
+    private static bool isRead;
+    private static char isText;
+
+    private static void ReadConsole()
+    {
+        isRead = true;
+        isText = Console.ReadKey().KeyChar;
+        isRead = false;
+    }
+
+    static void Main()
+    {
+        int[,] map = new int[16,8];
+        int score = 0;
+        int stop = 0;
+        int end = 0;
+        int exit = 0;
+        
+        while (exit != 1)
+        {
+            Console.Clear();
+            Console.WriteLine("РГР - ТЕТРИС");
+            Console.WriteLine();
+            Console.WriteLine("1. Игра Тетрис");
+            Console.WriteLine("2. Об Авторе");
+            Console.WriteLine("3. Выход");
+            
+            while (!int.TryParse(Console.ReadLine(), out int v))
+            {
+                Console.WriteLine("Ошибка ввода!");
+                break;
+            }
+            Console.Clear();
+            
+            if (v == 1)
+            {
+                Console.WriteLine(" ___ ___ ___ ___ ___ ___ ___ ___");
+                Console.WriteLine("|   |   |   | 1 |   |   |   |   |");
+                Console.WriteLine("|   |   |   |   |   |   |   |   |");
+                Console.WriteLine("|   |   |   |   |   |   |   |   |");
+                Console.WriteLine("|   |   |   |   |   |   |   |   |");
+                Console.WriteLine("|   |   |   |   |   |   |   |   |");
+                Console.WriteLine("|   |   |   |   |   |   |   |   |");
+                Console.WriteLine("|   |   |   |   |   |   |   |   |");
+                Console.WriteLine("|   |   |   |   |   |   |   |   |");
+                Console.WriteLine("|   |   |   |   |   |   |   |   |");
+                Console.WriteLine("|   |   |   |   |   |   |   |   |");
+                Console.WriteLine("|   |   |   |   |   |   |   |   |");
+                Console.WriteLine("|   |   |   |   |   |   |   |   |");
+                Console.WriteLine("|   |   |   |   |   |   |   |   |");
+                Console.WriteLine("|   |   |   |   |   |   |   |   |");
+                Console.WriteLine("|   |   |   |   |   |   |   |   |");
+                Console.WriteLine("|   |   |   |   |   |   |   |   |");
+                Console.WriteLine(" -------------------------------");
+                while (end != 1)
+                {
+                    Console.Clear();
+                    Console.WriteLine("SCORE: {0}", score);
+                    Thread.Sleep(1500);
+                    stop = 0;
+                    int x = 0;
+                    int y = 3;
+                    map[x, y] = 1;
+                
+                    while (stop != 1)
+                    {
+                        Thread th = new Thread(ReadConsole);
+                        
+                        th.Start();
+                        Thread.Sleep(500);
+                        th.Abort();
+                        Console.WriteLine();
+                        th.Join();
+                        
+                        char shape = ' ';
+                        char form = ' ';
+            
+                        if (isRead)
+                        {
+                            Console.WriteLine(" ___ ___ ___ ___ ___ ___ ___ ___ ");
+                            if (x == 15)
+                            {
+                                stop = 1;
+                                break;
+                            }
+                            else
+                            {
+                                if (map[x+1,y] == 1)
+                                {
+                                    x = x;
+                                    stop = 1;
+                                    break;
+                                }
+                                else
+                                {
+                                    x++;
+                                    map[x, y] = 1;
+                                    map[x-1, y] = 0;
+                                }
+                            }
+                            
+                            for (int i = 0; i < 16; i++)
+                            {
+                                for (int j = 0; j < 8; j++)
+                                {
+                                    if (map[i,j] == 1)
+                                    {
+                                        shape = '1';
+                                    }
+                                    else
+                                    {
+                                        shape = ' ';
+                                    }
+            
+                                    if (j == 0)
+                                    {
+                                        
+                                        if (j == y && i == x)
+                                        {
+                                            Console.Write("| ");
+                                            Console.ForegroundColor = ConsoleColor.Red;
+                                            Console.Write("{0} ", shape);
+                                            Console.ResetColor();
+                                            Console.Write("|");
+                                        }
+                                        else
+                                        {
+                                            Console.Write("| ");
+                                            Console.ForegroundColor = ConsoleColor.Blue;
+                                            Console.Write("{0} ", shape);
+                                            Console.ResetColor();
+                                            Console.Write("|");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (j == y && i == x)
+                                        {
+                                            Console.Write(" ");
+                                            Console.ForegroundColor = ConsoleColor.Red;
+                                            Console.Write("{0} ", shape);
+                                            Console.ResetColor();
+                                            Console.Write("|");
+                                        }
+                                        else
+                                        {
+                                            Console.Write(" ");
+                                            Console.ForegroundColor = ConsoleColor.Blue;
+                                            Console.Write("{0} ", shape);
+                                            Console.ResetColor();
+                                            Console.Write("|");
+                                        }
+                                    }
+                                }
+                                Console.WriteLine();
+                            }
+                            Console.WriteLine(" -------------------------------");
+            
+                        }
+                        else
+                        {
+                            if (isText == 's')
+                            {
+                                if (x == 15)
+                                {
+                                    stop = 1;
+                                    break;
+                                }
+                                else
+                                {
+                                    if (map[x+1,y] == 1)
+                                    {
+                                        x = x;
+                                        stop = 1;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        x++;
+                                        map[x, y] = 1;
+                                        map[x-1, y] = 0;
+                                    }
+                                }
+                            }
+                            else if (isText == 'a')
+                            {
+                                if (y == 0)
+                                {
+                                    y = y;
+                                }
+                                else
+                                {
+                                    if (map[x,y-1] == 1)
+                                    {
+                                        y = y;
+                                    }
+                                    else
+                                    {
+                                        y--;
+                                        map[x, y] = 1;
+                                        map[x, y+1] = 0;
+                                    }
+                                }
+                            }
+                            else if (isText == 'd')
+                            {
+                                if (y == 7)
+                                {
+                                    y = y;
+                                }
+                                else
+                                {
+                                    if (map[x, y+1] == 1)
+                                    {
+                                        y = y;
+                                    }
+                                    else
+                                    {
+                                        y++;
+                                        map[x, y] = 1;
+                                        map[x, y-1] = 0;
+                                    }
+                                }
+                            }
+            
+                            Console.WriteLine(" ___ ___ ___ ___ ___ ___ ___ ___");
+                            for (int i = 0; i < 16; i++)
+                            {
+                                for (int j = 0; j < 8; j++)
+                                {
+                                    if (map[i,j] == 1)
+                                    {
+                                        shape = '1';
+                                    }
+                                    else
+                                    {
+                                        shape = ' ';
+                                    }
+                                    if (j == 0)
+                                    {
+                                        if (j == y && i == x)
+                                        {
+                                            Console.Write("| ");
+                                            Console.ForegroundColor = ConsoleColor.Red;
+                                            Console.Write("{0} ", shape);
+                                            Console.ResetColor();
+                                            Console.Write("|");
+                                        }
+                                        else
+                                        {
+                                            Console.Write("| ");
+                                            Console.ForegroundColor = ConsoleColor.Blue;
+                                            Console.Write("{0} ", shape);
+                                            Console.ResetColor();
+                                            Console.Write("|");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (j == y && i == x)
+                                        {
+                                            Console.Write(" ");
+                                            Console.ForegroundColor = ConsoleColor.Red;
+                                            Console.Write("{0} ", shape);
+                                            Console.ResetColor();
+                                            Console.Write("|");
+                                        }
+                                        else
+                                        {
+                                            Console.Write(" ");
+                                            Console.ForegroundColor = ConsoleColor.Blue;
+                                            Console.Write("{0} ", shape);
+                                            Console.ResetColor();
+                                            Console.Write("|");
+                                        }
+                                    }
+                                }
+                                Console.WriteLine();
+                            }
+                            Console.WriteLine(" -------------------------------");
+                            
+                        }
+            
+                        Thread.Sleep(500);
+                        Console.Clear();
+                    }
+                    
+                    for(int i =0; i<16; i++)
+                    {
+                        int k = 0;
+                        int i_s = 0;
+                        for (int j = 0; j<8; j++)
+                        {
+                            if (map[i,j] == 1)
+                            {
+                                k++;
+                            }
+                        }
+                        if (k==8)
+                        {
+                            for (int a = i; i >0; i--)
+                            {
+                                for (int j = 0; j<8; j++)
+                                {
+                                    map[i,j] = map[i-1, j];
+                                }
+                            }
+                            score++;
+                            break;
+                        }
+                    }
+                    for (int j = 0; j<8; j++)
+                    {
+                        if (map[0,j] == 1)
+                        {
+                            end = 1;
+                            break;
+                        }
+                    }
+                    stop = 0;
+                    x = 0;
+                    y = 3;
+                }
+                Console.WriteLine("Игра окончена, ваш результат: {0}", score);
+                Console.Write("Для выхода в меню, введите любую клавишу");
+                var p = Console.ReadLine();
+            }
+            
+            else if (v == 2)
+            {
+                Console.WriteLine("Об Авторе");
+                Console.WriteLine();
+                Console.WriteLine("Работу выполнил студент гр. МО-221");
+                Console.WriteLine("Мусияк Егор");
+                Console.WriteLine("Контакты: mm.yegor@mail.ru");
+                Console.WriteLine();
+                Console.Write("Для выхода в меню, введите любую клавишу");
+                var p = Console.ReadLine();
+                Console.Clear();
+            }
+            else if (v == 3)
+            {
+                exit = 1;
+            }
+            Console.Clear();
+        }
+
+
+    }
+}
